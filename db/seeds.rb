@@ -7,3 +7,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Admin.create! email: 'admin@cszero.com', password: 'secret'
+User.create! email: 'user@cszero.com', password: 'secret'
