@@ -1,3 +1,8 @@
 # Customer Support Zero
 
-## Cases
+## Prepare DB
+
+```
+rails db:mongoid:create_indexes
+rails db:seed
+```

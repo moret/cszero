@@ -47,8 +47,20 @@ class Case
   field :uf
   field :reason
   field :notes
+  field :date, type: DateTime
+  field :email
 
-  validates :type, inclusion: TYPES.keys.map {|key| key.to_s }
-  validates :uf, inclusion: BRAZIL_UFS.keys.map {|key| key.to_s }
-  validates :reason, inclusion: REASONS.keys.map {|key| key.to_s }
+  before_create :save_date
+
+  validates :type, presence: true, inclusion: TYPES.keys.map {|key| key.to_s}
+  validates :uf, presence: true, inclusion: BRAZIL_UFS.keys.map {|key| key.to_s}
+  validates :reason, presence: true, inclusion: REASONS.keys.map {|key| key.to_s}
+  validates :notes, presence: true
+  validates :email, presence: true
+
+protected
+
+  def save_date
+    self.date ||= DateTime.now
+  end
 end

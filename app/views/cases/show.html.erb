@@ -1,4 +1,11 @@
-<p>
-  <strong>Observações:</strong>
-  <%= @case.notes %>
-</p>
+<h2>Atendimento encerrado</h2>
+<strong>Horário:</strong> <%= @case.date %><br/>
+<strong>Tipo:</strong> <%= Case::TYPES[@case.type.to_sym] %><br/>
+<strong>UF:</strong> <%= Case::BRAZIL_UFS[@case.uf.to_sym] %><br/>
+<strong>Motivo:</strong> <%= Case::REASONS[@case.reason.to_sym] %><br/>
+<strong>Anotações:</strong><br/><textarea readonly><%= @case.notes %></textarea><br/>
+<strong>Atendente:</strong><%= @case.email %><br/>
+<hr/>
+<%= link_to 'Iniciar novo atendimento', new_case_path %>
+<span> | </span>
+<%= link_to 'Sair', destroy_user_session_path, method: :delete %>

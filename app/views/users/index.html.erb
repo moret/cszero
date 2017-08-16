@@ -1,0 +1,30 @@
+<% if @cases.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Tipo</th>
+        <th>UF</th>
+        <th>Motivo</th>
+        <th>Anotações</th>
+        <th>Atendente</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @cases.each do |individual_case| %>
+      <tr>
+        <td><%= individual_case.date %></td>
+        <td><%= Case::TYPES[individual_case.type.to_sym] %></td>
+        <td><%= Case::BRAZIL_UFS[individual_case.uf.to_sym] %></td>
+        <td><%= Case::REASONS[individual_case.reason.to_sym] %></td>
+        <td><%= individual_case.notes %></td>
+        <td><%= individual_case.email %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+<hr/>
+<%= link_to 'Criar novo atendente', new_user_path %>
+<span> | </span>
+<%= link_to 'Sair', destroy_admin_session_path, method: :delete %>

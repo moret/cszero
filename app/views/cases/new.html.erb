@@ -1,8 +1,10 @@
 <h2>Novo atendimento</h2>
-<% if @case && @case.errors %>
-  <% @case.errors.full_messages.each do |full_message| %>
-    <%= full_message %>
-  <% end %>
+<% if @case.errors.any? %>
+  <ul>
+    <% @case.errors.full_messages.each do |full_message| %>
+      <li><%= full_message %></li>
+    <% end %>
+  </ul>
 <% end %>
 <%= form_for :case, url: cases_path do |f| %>
   <p>
@@ -13,7 +15,7 @@
     <% end %>
   </p>
   <p>
-    <%= f.label 'Estado' %><br>
+    <%= f.label 'UF' %><br>
     <%= f.select :uf, Case::BRAZIL_UFS.invert, prompt: 'Escolha...' %>
   </p>
   <p>
@@ -31,3 +33,5 @@
     <%= f.submit 'Encerrar atendimento' %>
   </p>
 <% end %>
+<hr/>
+<%= link_to 'Sair', destroy_user_session_path, method: :delete %>
