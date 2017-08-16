@@ -1,10 +1,10 @@
 <h2>Atendimento encerrado</h2>
-<strong>Horário:</strong> <%= @case.date %><br/>
-<strong>Tipo:</strong> <%= Case::TYPES[@case.type.to_sym] %><br/>
-<strong>UF:</strong> <%= Case::BRAZIL_UFS[@case.uf.to_sym] %><br/>
-<strong>Motivo:</strong> <%= Case::REASONS[@case.reason.to_sym] %><br/>
+<strong>Horário:</strong> <span id='date'><%= @case.date %></span><br/>
+<strong>Tipo:</strong> <span id='type'><%= Case::TYPES[@case.type.to_sym] %></span><br/>
+<strong>UF:</strong> <span id='uf'><%= Case::BRAZIL_UFS[@case.uf.to_sym] %></span><br/>
+<strong>Motivo:</strong> <span id='reason'><%= Case::REASONS[@case.reason.to_sym] %></span><br/>
 <strong>Anotações:</strong><br/><textarea readonly><%= @case.notes %></textarea><br/>
-<strong>Atendente:</strong><%= @case.email %><br/>
+<strong>Atendente:</strong> <span id='email'><%= @case.email %></span><br/>
 <hr/>
 <%= link_to 'Iniciar novo atendimento', new_case_path %>
 <span> | </span>
