@@ -27,13 +27,13 @@ rails db:seed
 ### Test
 
 ```
-rails test
+rake test
 ```
 
 ### Start and auto-reload on changes in development
 
 ```
-rails start
+rails s
 ```
 
 ## Usage
