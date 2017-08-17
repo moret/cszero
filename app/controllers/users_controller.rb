@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_admin!
 
   def index
-    @cases = Case.order_by date: :desc
+    @report = Case.report
   end
 
   def show

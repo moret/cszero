@@ -1,24 +1,30 @@
-<% if @cases.any? %>
+<% if @report.present? %>
   <table>
     <thead>
       <tr>
-        <th>Data</th>
-        <th>Tipo</th>
+        <th>Dia</th>
         <th>UF</th>
+        <th>Hora</th>
+        <th>Tipo</th>
         <th>Motivo</th>
         <th>Anotações</th>
         <th>Atendente</th>
       </tr>
     </thead>
     <tbody>
-    <% @cases.each do |individual_case| %>
+    <% @report.each do |day_uf| %>
       <tr>
-        <td><%= individual_case.date %></td>
-        <td><%= Case::TYPES[individual_case.type.to_sym] %></td>
-        <td><%= Case::BRAZIL_UFS[individual_case.uf.to_sym] %></td>
-        <td><%= Case::REASONS[individual_case.reason.to_sym] %></td>
-        <td><%= individual_case.notes %></td>
-        <td><%= individual_case.email %></td>
+        <td rowspan="<%= day_uf.cases.length %>"><%= day_uf._id.day %></td>
+        <td rowspan="<%= day_uf.cases.length %>"><%= Case::BRAZIL_UFS[day_uf._id.uf.to_sym] %></td>
+        <% day_uf.cases.each do |individual_case| %>
+          <td><%= individual_case.date.strftime '%H:%M:%S%z' %></td>
+          <td><%= Case::TYPES[individual_case.type.to_sym] %></td>
+          <td><%= Case::REASONS[individual_case.reason.to_sym] %></td>
+          <td><%= individual_case.notes %></td>
+          <td><%= individual_case.email %></td>
+          </tr>
+          <tr>
+        <% end %>
       </tr>
     <% end %>
     </tbody>

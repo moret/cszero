@@ -1,6 +1,38 @@
 class Case
   include Mongoid::Document
 
+  def self.report
+    Case.collection.aggregate([
+      {
+        '$sort': { date: -1 }
+      },
+      {
+        '$project': {
+          day: {
+            '$dateToString': { format: '%Y-%m-%d', date: '$date' }
+          },
+          type: 1,
+          uf: 1,
+          reason: 1,
+          notes: 1,
+          date: 1,
+          email: 1
+        }
+      },
+      {
+        '$group': {
+          _id: { day: '$day', uf: '$uf' },
+          cases: { '$push': '$$ROOT' }
+        }
+      },
+      {
+        '$sort': { '_id.day': -1, '_id.uf': 1 }
+      }
+    ]).map do |day_uf|
+      RecursiveOpenStruct.new day_uf, recurse_over_arrays: true
+    end
+  end
+
   TYPES = {
     phone: 'Telefone',
     chat: 'Chat',
