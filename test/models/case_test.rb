@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class CaseTest < ActiveSupport::TestCase
+  setup do
+    Case.collection.drop
+  end
+
   test "type must be either phone, chat, or email and not empty" do
     assert_empty Case.create(type: 'phone').errors[:type]
     assert_empty Case.create(type: 'chat').errors[:type]
@@ -41,5 +45,27 @@ class CaseTest < ActiveSupport::TestCase
       newCase.save
       assert_equal DateTime.now, newCase.date
     end
+  end
+
+  test "report groups by day ascending, uf descending, and sorts by date" do
+    Case.create! type: 'email', uf: 'RJ', reason: 'suggestion', notes: 'Writes too much.', email: 'user@cszero', date: DateTime.strptime('2017-08-15T10:34:45Z')
+    Case.create! type: 'chat', uf: 'RJ', reason: 'compliment', notes: 'Writes too little.', email: 'user@cszero', date: DateTime.strptime('2017-08-15T11:34:45Z')
+    Case.create! type: 'chat', uf: 'DF', reason: 'suggestion', notes: 'A bit of cheese.', email: 'user@cszero', date: DateTime.strptime('2017-08-15T12:34:45Z')
+    Case.create! type: 'email', uf: 'AC', reason: 'compliment', notes: 'Mythical.', email: 'user@cszero', date: DateTime.strptime('2017-08-16T10:34:45Z')
+    Case.create! type: 'phone', uf: 'MG', reason: 'suggestion', notes: 'Ugly voice.', email: 'user@cszero', date: DateTime.strptime('2017-08-16T11:34:45Z')
+    Case.create! type: 'chat', uf: 'MG', reason: 'compliment', notes: 'Slow typer.', email: 'user@cszero', date: DateTime.strptime('2017-08-16T15:34:45Z')
+    report = Case.report
+    assert_equal '2017-08-16', report[0]._id.day
+    assert_equal 'AC', report[0]._id.uf
+    assert_equal '2017-08-16', report[1]._id.day
+    assert_equal 'MG', report[1]._id.uf
+    assert_equal DateTime.strptime('2017-08-16T15:34:45Z'), report[1].cases[0].date
+    assert_equal DateTime.strptime('2017-08-16T11:34:45Z'), report[1].cases[1].date
+    assert_equal '2017-08-15', report[2]._id.day
+    assert_equal 'DF', report[2]._id.uf
+    assert_equal '2017-08-15', report[3]._id.day
+    assert_equal 'RJ', report[3]._id.uf
+    assert_equal DateTime.strptime('2017-08-15T11:34:45Z'), report[3].cases[0].date
+    assert_equal DateTime.strptime('2017-08-15T10:34:45Z'), report[3].cases[1].date
   end
 end
