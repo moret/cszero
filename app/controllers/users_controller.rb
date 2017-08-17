@@ -1,10 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_admin!
 
-  def index
-    @report = Case.report
-  end
-
   def show
     @user = User.find params[:id]
   end

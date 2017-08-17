@@ -23,9 +23,9 @@ class RootControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to cases_path
   end
 
-  test "logged admin is redirected to users#index" do
+  test "logged admin is redirected to report#show" do
     sign_in @admin
     get root_path
-    assert_redirected_to users_path
+    assert_redirected_to report_path
   end
 end

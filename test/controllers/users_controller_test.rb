@@ -10,16 +10,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "throws out unlogged admins" do
-    get users_path
+    get new_user_path
     assert_redirected_to new_admin_session_path
-  end
-
-  test "logged in users#index links to create user and sign out" do
-    sign_in @admin
-    get users_path
-    assert_response :success
-    assert_select 'a[href=?]', new_user_path, count: 1, text: 'Criar novo atendente'
-    assert_select 'a[href=?]', destroy_admin_session_path, count: 1, text: 'Sair'
   end
 
   test "logged in users#new shows form and link to sign out" do
@@ -40,11 +32,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_path(User.find_by email: 'user@cszero.com')
   end
 
-  test "logged in users#show shows user email and link to sign out" do
+  test "logged in users#show shows user email, and link to report and sign out" do
     sign_in @admin
     get user_path(User.create email: 'user@cszero.com', password: 'secret')
     assert_response :success
     assert_select 'span', id: 'email', text: 'user@cszero.com'
+    assert_select 'a[href=?]', report_path, count: 1, text: 'Relatório'
     assert_select 'a[href=?]', destroy_admin_session_path, count: 1, text: 'Sair'
   end
 end
