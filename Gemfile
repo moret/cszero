@@ -52,5 +52,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "mongoid", "~> 6.2"
-gem "devise", "~> 4.3"
+gem "devise", "~> 4.7"
 gem "recursive-open-struct", "~> 1.0"
